@@ -1,0 +1,16 @@
+{
+  "parser": "typescript-eslint-parser",
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "linterOptions": {
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts",
+      "coverage/lcov-report/*.js"
+    ]
+  },
+  "jsRules": {
+    "object-literal-sort-keys": false, //Disable for javascript
+    "no-bitwise": false,
+    "no-useless-escape": false
+  }
+}
