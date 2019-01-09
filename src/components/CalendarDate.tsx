@@ -2,6 +2,7 @@ import * as React from "react";
 import {
   Avatar,
   Card,
+  CardActionArea,
   CardHeader,
   CardContent,
   Fade,
@@ -22,6 +23,7 @@ import axios from "axios";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import File from "./File";
+import { withRouter } from "react-router";
 
 interface IProps {
   day: Date;
@@ -30,6 +32,7 @@ interface IProps {
   rootDir: any;
   updateProgress: (val: number) => void;
   uploadFile: (file: any, rootDir: any, day: Date, driveData: any) => void;
+  history: any;
 }
 
 interface IState {
@@ -54,6 +57,7 @@ class Calendar extends React.Component<IProps, IState> {
     this.dropHandler = this.dropHandler.bind(this);
     this.handleDrag = this.handleDrag.bind(this);
     this.toggleShowExpand = this.toggleShowExpand.bind(this);
+    this.handleRedirect = this.handleRedirect.bind(this);
   }
 
   public render() {
@@ -67,31 +71,33 @@ class Calendar extends React.Component<IProps, IState> {
         onMouseLeave={this.toggleShowExpand}
       >
         <Card className={classes.root}>
-          <CardHeader
-            title={day.getDate()}
-            className={isToday(day) ? classes.today : ""}
-            action={
-              <Fade in={showExpand}>
-                <IconButton
-                  children={
-                    <Link to={"/date/" + day.toLocaleDateString()}>
-                      <Fullscreen />
-                    </Link>
-                  }
-                />
-              </Fade>
-            }
-          />
-          <CardContent>
-            <List dense={true}>
-              {driveData &&
-                driveData.files.map((t: any) => (
-                  <ListItem key={"files" + t.id}>
-                    <ListItemIcon children={<File file={t} />} />
-                  </ListItem>
-                ))}
-            </List>
-          </CardContent>
+          <CardActionArea onClick={this.handleRedirect}>
+            <CardHeader
+              title={day.getDate()}
+              className={isToday(day) ? classes.today : ""}
+              action={
+                <Fade in={showExpand}>
+                  <IconButton
+                    children={
+                      <Link to={"/date/" + day.toLocaleDateString()}>
+                        <Fullscreen />
+                      </Link>
+                    }
+                  />
+                </Fade>
+              }
+            />
+            <CardContent>
+              <List dense={true}>
+                {driveData &&
+                  driveData.files.map((t: any) => (
+                    <ListItem key={"files" + t.id}>
+                      <ListItemIcon children={<File file={t} />} />
+                    </ListItem>
+                  ))}
+              </List>
+            </CardContent>
+          </CardActionArea>
         </Card>
       </div>
     );
@@ -150,13 +156,14 @@ class Calendar extends React.Component<IProps, IState> {
       ev.dataTransfer.clearData();
     }
   }
+  private handleRedirect() {
+    this.props.history.push("/date/" + this.props.day.toLocaleDateString());
+  }
 }
 
 const mapState = (state: any, ownProps: any) => {
   return {
-    driveData: state.files.dateMap
-      ? state.files.dateMap[ownProps.day.toLocaleDateString()]
-      : undefined,
+    driveData: state.files.dateMap[ownProps.day.toLocaleDateString()],
     rootDir: state.files.rootDir
   };
 };
@@ -181,7 +188,9 @@ const mapDispatch = (dispatch: any) =>
     dispatch
   );
 
-export default connect(
-  mapState,
-  mapDispatch
-)(withStyles(styles)(Calendar));
+export default withRouter(
+  connect(
+    mapState,
+    mapDispatch
+  )(withStyles(styles)(Calendar))
+);

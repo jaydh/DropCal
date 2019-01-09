@@ -1,9 +1,6 @@
 import produce from "immer";
 
-export default (
-  state = { rootDir: undefined, dateMap: undefined },
-  action: any
-) =>
+export default (state = { rootDir: undefined, dateMap: {} }, action: any) =>
   produce(state, draft => {
     switch (action.type) {
       case "FETCH_FILES_SUCCESS":
