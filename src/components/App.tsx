@@ -52,31 +52,32 @@ class App extends React.Component<IProps, IState> {
     const { signedIn } = this.props;
     const { gapiLoaded } = this.state;
     return (
-      <BrowserRouter>
-        <Switch>
-          {gapiLoaded ? (
-            <>
-              <Progress />
-              <AppBar position="static">
-                <Typography variant="h6" color="inherit">
-                  DropCal
-                </Typography>
-                {signedIn ? (
-                  <Button onClick={this.handleSignoutClick}>Sign Out</Button>
-                ) : (
-                  <Button onClick={this.handleAuthClick}>Sign In</Button>
-                )}
-              </AppBar>
-
-              <Route path="/" exact={true} component={Calendar} />
-              <Route path="/cal" component={Calendar} />
-              <Route path="/date/:month/:day/:year" component={DateView} />
-            </>
+      <>
+        <Progress />
+        <AppBar position="static">
+          <Typography variant="h6" color="inherit">
+            DropCal
+          </Typography>
+          {signedIn ? (
+            <Button onClick={this.handleSignoutClick}>Sign Out</Button>
           ) : (
-            <CircularProgress />
+            <Button onClick={this.handleAuthClick}>Sign In</Button>
           )}
-        </Switch>
-      </BrowserRouter>
+        </AppBar>
+        {gapiLoaded ? (
+          <BrowserRouter>
+            <Switch>
+              <>
+                <Route path="/" exact={true} component={Calendar} />
+                <Route path="/cal" component={Calendar} />
+                <Route path="/date/:month/:day/:year" component={DateView} />
+              </>
+            </Switch>
+          </BrowserRouter>
+        ) : (
+          <CircularProgress />
+        )}
+      </>
     );
   }
 

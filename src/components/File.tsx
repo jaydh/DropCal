@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Avatar, Button, Tooltip, withStyles } from "@material-ui/core";
+import { Avatar, Fab, Tooltip, withStyles } from "@material-ui/core";
 
 interface IProps {
   file: any;
@@ -20,17 +20,16 @@ class File extends React.Component<IProps> {
   }
   public render() {
     const { classes, file } = this.props;
-    console.log(file);
     return (
       <Tooltip title={file.name}>
-        <Button variant="fab" mini={true} onClick={this.handleClick}>
+        <Fab size="small" onClick={this.handleClick}>
           <a target={file.webContentLink}>
             <Avatar
               className={classes.avatar}
               src={file.hasThumbnail ? file.thumbnailLink : file.iconLink}
             />
           </a>
-        </Button>
+        </Fab>
       </Tooltip>
     );
   }

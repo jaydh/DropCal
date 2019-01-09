@@ -1,5 +1,4 @@
-import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
-import { parse } from "date-fns";
+import { call, put, takeEvery } from "redux-saga/effects";
 import axios from "axios";
 import { store } from "../index";
 
@@ -21,10 +20,7 @@ const handleUpload = async (action: any) => {
   const dir = driveData
     ? driveData.id
     : await createDir(action.rootDir, action.day);
-  const metadata = {
-    name: file.name,
-    mimeType: file.type
-  };
+
   return window.gapi.client.drive.files
     .create({
       "content-type": "application/json",
@@ -48,6 +44,7 @@ const handleUpload = async (action: any) => {
         onUploadProgress: (p: any) =>
           store.dispatch({
             type: "UPDATE_UPLOAD_PROGRESS",
+            name: file.name,
             value: p.loaded / p.total
           })
       });

@@ -43,7 +43,7 @@ const styles = {
   },
   today: {
     backgroundColor: "#CAE9F5"
-  },
+  }
 };
 
 class Calendar extends React.Component<IProps, IState> {
@@ -168,7 +168,14 @@ const mapDispatch = (dispatch: any) =>
         return { type: "UPDATE_UPLOAD_PROGRESS", value };
       },
       uploadFile: (file: any, rootDir: any, day: Date, driveData: any) => {
-        return { type: "UPLOAD_FILE_REQUESTED", file, rootDir, day, driveData };
+        return {
+          type: "UPLOAD_FILE_REQUESTED",
+          file: file,
+          fileName: file.name,
+          rootDir,
+          day,
+          driveData
+        };
       }
     },
     dispatch

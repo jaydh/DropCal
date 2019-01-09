@@ -1,11 +1,23 @@
 import produce from "immer";
 
-export default (state = { progress: undefined }, action: any) =>
+export interface IUpload {
+  file: any;
+  progress: number;
+}
+
+export default (state = { uploads: [] as IUpload[] }, action: any) =>
   produce(state, draft => {
     switch (action.type) {
+      case "UPLOAD_FILE_REQUESTED":
+        draft.uploads.push({ file: action.fileName, progress: 0 });
+        break;
       case "UPDATE_UPLOAD_PROGRESS":
-        draft.progress = action.value;
-
+        draft.uploads = draft.uploads.map((t: IUpload) =>
+          t.file === action.name ? { ...t, progress: action.value } : t
+        );
+        break;
+      case "UPLOAD_FILE_SUCCESS":
+        draft.uploads.filter((t: IUpload) => t.file !== action.files.data.name);
         break;
     }
   });
