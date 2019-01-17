@@ -31,6 +31,10 @@ interface IProps {
 }
 
 const styles = {
+  root: {
+    width: "300px",
+    height: "200px"
+  },
   actions: { display: "flex" },
   avatar: {
     height: "20px",
@@ -49,7 +53,7 @@ class File extends React.Component<IProps, IState> {
     const { classes, file } = this.props;
     console.log(file);
     return (
-      <Card>
+      <Card className={classes.root}>
         <CardHeader
           avatar={
             <Avatar

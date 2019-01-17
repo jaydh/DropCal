@@ -49,11 +49,12 @@ class App extends React.Component<IProps, IState> {
     const { gapiLoaded } = this.state;
     return (
       <>
-        <Bar />
         {gapiLoaded ? (
           <BrowserRouter>
             <Switch>
               <>
+                <Bar />
+
                 <Route path="/" exact={true} component={Calendar} />
                 <Route path="/cal" component={Calendar} />
                 <Route path="/date/:month/:day/:year" component={DateView} />
