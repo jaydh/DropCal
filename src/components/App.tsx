@@ -5,9 +5,9 @@ import Calendar from "./Calendar";
 import DateView from "./DateView";
 import { AppBar, Button, Typography } from "@material-ui/core";
 import { CircularProgress } from "@material-ui/core";
-import Progress from "./Progress";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import Bar from "./Bar";
 
 declare global {
   interface Window {
@@ -16,7 +16,6 @@ declare global {
 }
 
 interface IProps {
-  signedIn: boolean;
   setSignIn: (t: boolean) => void;
   setRoot: (t: any) => void;
   getFiles: () => void;
@@ -37,8 +36,6 @@ class App extends React.Component<IProps, IState> {
     this.updateSigninStatus = this.updateSigninStatus.bind(this);
     this.createFolder = this.createFolder.bind(this);
     this.getFolderId = this.getFolderId.bind(this);
-    this.handleAuthClick = this.handleAuthClick.bind(this);
-    this.handleSignoutClick = this.handleSignoutClick.bind(this);
   }
   public componentDidMount() {
     const script = document.createElement("script");
@@ -49,21 +46,10 @@ class App extends React.Component<IProps, IState> {
     document.body.appendChild(script);
   }
   public render() {
-    const { signedIn } = this.props;
     const { gapiLoaded } = this.state;
     return (
       <>
-        <Progress />
-        <AppBar position="static">
-          <Typography variant="h6" color="inherit">
-            DropCal
-          </Typography>
-          {signedIn ? (
-            <Button onClick={this.handleSignoutClick}>Sign Out</Button>
-          ) : (
-            <Button onClick={this.handleAuthClick}>Sign In</Button>
-          )}
-        </AppBar>
+        <Bar />
         {gapiLoaded ? (
           <BrowserRouter>
             <Switch>
@@ -164,19 +150,8 @@ class App extends React.Component<IProps, IState> {
     }
     this.props.setSignIn(isSignedIn);
   }
-
-  private handleAuthClick() {
-    window.gapi.auth2.getAuthInstance().signIn();
-  }
-
-  private handleSignoutClick() {
-    window.gapi.auth2.getAuthInstance().signOut();
-  }
 }
 
-const mapState = (state: any) => {
-  return { signedIn: state.user.signedIn };
-};
 const mapDispatch = (dispatch: any) =>
   bindActionCreators(
     {
@@ -194,6 +169,6 @@ const mapDispatch = (dispatch: any) =>
   );
 
 export default connect(
-  mapState,
+  undefined,
   mapDispatch
 )(App);

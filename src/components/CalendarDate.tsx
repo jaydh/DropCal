@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardContent,
   Fade,
+  Fab,
   Grid,
   IconButton,
   List,
@@ -14,6 +15,7 @@ import {
   ListItemText,
   Paper,
   withStyles,
+  Tooltip,
   Typography
 } from "@material-ui/core";
 import { Fullscreen } from "@material-ui/icons";
@@ -40,6 +42,10 @@ interface IState {
 }
 
 const styles = {
+  avatar: {
+    height: "20px",
+    width: "20px"
+  },
   root: {
     width: "12vw",
     height: "19vh"
@@ -76,15 +82,14 @@ class Calendar extends React.Component<IProps, IState> {
               title={day.getDate()}
               className={isToday(day) ? classes.today : ""}
               action={
-                <Fade in={showExpand}>
-                  <IconButton
-                    children={
-                      <Link to={"/date/" + day.toLocaleDateString()}>
-                        <Fullscreen />
-                      </Link>
-                    }
-                  />
-                </Fade>
+                <Fade
+                  in={showExpand}
+                  children={
+                    <Link to={"/date/" + day.toLocaleDateString()}>
+                      <Fullscreen />
+                    </Link>
+                  }
+                />
               }
             />
             <CardContent>
@@ -92,7 +97,26 @@ class Calendar extends React.Component<IProps, IState> {
                 {driveData &&
                   driveData.files.map((t: any) => (
                     <ListItem key={"files" + t.id}>
-                      <ListItemIcon children={<File file={t} />} />
+                      <ListItemIcon
+                        children={
+                          <Tooltip title={t.name}>
+                            <Fab
+                              size="small"
+                              onClick={() => window.open(t.webContentLink)}
+                              children={
+                                <Avatar
+                                  className={classes.avatar}
+                                  src={
+                                    t.hasThumbnail
+                                      ? t.thumbnailLink
+                                      : t.iconLink
+                                  }
+                                />
+                              }
+                            />
+                          </Tooltip>
+                        }
+                      />
                     </ListItem>
                   ))}
               </List>
