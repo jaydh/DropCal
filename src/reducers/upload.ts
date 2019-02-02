@@ -17,7 +17,9 @@ export default (state = { uploads: [] as IUpload[] }, action: any) =>
         );
         break;
       case "UPLOAD_FILE_SUCCESS":
-        draft.uploads.filter((t: IUpload) => t.file !== action.files.data.name);
+        draft.uploads = draft.uploads.filter(
+          (t: IUpload) => t.file !== action.files.data.name
+        );
         break;
     }
   });

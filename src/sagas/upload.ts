@@ -6,7 +6,8 @@ import { store } from "../index";
 function* uploadFile(action: any) {
   try {
     const files = yield call(handleUpload, action);
-    yield put({ type: "UPLOAD_FILE_SUCCESS", files: files });
+    yield put({ type: "UPLOAD_FILE_SUCCESS", files });
+    yield put({ type: "FETCH_FILES_REQUESTED" });
   } catch (e) {
     yield put({ type: "UPLOAD_FILE_FAILED", message: e.message });
   }
