@@ -42,9 +42,12 @@ interface IState {
 }
 
 const styles = {
+  file: {
+    height: "7px"
+  },
   avatar: {
-    height: "20px",
-    width: "20px"
+    height: "10px",
+    width: "10px"
   },
   root: {
     width: "12vw",
@@ -96,11 +99,12 @@ class Calendar extends React.Component<IProps, IState> {
               <List dense={true}>
                 {driveData &&
                   driveData.files.map((t: any) => (
-                    <ListItem key={"files" + t.id}>
-                      <ListItemIcon
-                        children={
-                          <Tooltip title={t.name}>
+                    <Tooltip title={t.name}>
+                      <ListItem key={"files" + t.id}>
+                        <ListItemIcon
+                          children={
                             <Fab
+                              className={classes.file}
                               size="small"
                               onClick={() => window.open(t.webContentLink)}
                               children={
@@ -114,10 +118,10 @@ class Calendar extends React.Component<IProps, IState> {
                                 />
                               }
                             />
-                          </Tooltip>
-                        }
-                      />
-                    </ListItem>
+                          }
+                        />
+                      </ListItem>
+                    </Tooltip>
                   ))}
               </List>
             </CardContent>
